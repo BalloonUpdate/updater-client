@@ -72,9 +72,7 @@ public class MainLoader
 		
 		
 		classLoader.close();
-		
-		
-		
+
 		
 		//startLaunch(mconfig.launcherFileName);//启动启动器
 		//尝试注释掉这段代码  (因为会出现启动2个启动器的问题

@@ -1,0 +1,7 @@
+/build/
+/dist/
+/test/
+/nbproject/
+build.xml
+manifest.mf
+updater-client*

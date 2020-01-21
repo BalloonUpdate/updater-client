@@ -106,15 +106,17 @@ public class Netter extends NP
 		
 		//接收文件长度
 		long fileLength = netIn.readLong();
-		jarFile = File.createTempFile("updater-client-core", ".jar");
-		
+		jarFile = File.createTempFile("updater_client_core", ".jar");
+		//jarFile = new File("aaaaaaa.jar");
+
 		jarFile.createNewFile();
 		
 		FileOutputStream fos = new FileOutputStream(jarFile);
 	
-		byte[] buf = new byte[4096];
+		byte[] buf = new byte[1024];
 		int ac = (int)(fileLength / buf.length);
 		int bc = (int)(fileLength % buf.length);
+
 		for (int c = 0; c < ac; c++)
 		{
 			netIn.readFully(buf);
@@ -127,6 +129,8 @@ public class Netter extends NP
 		{
 			fos.write(netIn.readByte());
 		}
+
+
 		fos.close();
 	}
 	
