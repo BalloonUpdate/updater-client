@@ -1,7 +1,5 @@
 package cn.innc11.updater.client.loader;
 
-import cn.innc11.updater.client.loader.net.Netter;
-import cn.innc11.updater.client.loader.view.InfoWindow;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,7 +13,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
-import cn.innc11.updater.client.loader.memory.MConfig;
 
 public class MainLoader
 {
@@ -45,13 +42,13 @@ public class MainLoader
 			inputStream = getClass().getResourceAsStream("/"+propertiesFileName);
 		}
 		
-		MConfig mconfig = getMConfig(inputStream);
+		Config mconfig = getMConfig(inputStream);
 		
 		//关闭配置文件输入流 
 		inputStream.close();
 		
 		//包括握手验证和协议验证
-		Netter net = new Netter(mconfig.host, mconfig.port, w);
+		Nett net = new Nett(mconfig.host, mconfig.port, w);
 		net.start();
 		
 		File jar = net.getJarFile();
@@ -91,9 +88,9 @@ public class MainLoader
 	}
 	
 	
-	private MConfig getMConfig(InputStream inputStream) throws IOException, IllegalArgumentException, IllegalAccessException
+	private Config getMConfig(InputStream inputStream) throws IOException, IllegalArgumentException, IllegalAccessException
 	{
-		MConfig mconfig = new MConfig();
+		Config mconfig = new Config();
 		
 		Properties prop = new Properties();
 		prop.load(inputStream);

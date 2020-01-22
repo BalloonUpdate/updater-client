@@ -1,10 +1,10 @@
-package cn.innc11.updater.client.loader.memory;
+package cn.innc11.updater.client.loader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Properties;
 
-public class MConfig 
+public class Config
 {
 	public String host;
 	public int port;
@@ -12,7 +12,7 @@ public class MConfig
 	
 	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException
 	{
-		MConfig mconfig = new MConfig();
+		Config mconfig = new Config();
 		
 		mconfig.host = "127.0.0.1";
 		mconfig.port = 5398;
@@ -20,7 +20,7 @@ public class MConfig
 		
 		Properties prop = new Properties();
 		
-		for(Field field : MConfig.class.getDeclaredFields())
+		for(Field field : Config.class.getDeclaredFields())
 		{
 			int modifiers = field.getModifiers();
 			if(Modifier.isPublic(modifiers) || !Modifier.isStatic(modifiers))

@@ -1,6 +1,5 @@
-package cn.innc11.updater.client.loader.net;
+package cn.innc11.updater.client.loader;
 
-import cn.innc11.updater.client.loader.view.InfoWindow;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -10,7 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
 
-public class Netter extends NP
+public class Nett extends NP
 {
 	private final static byte[] PROTOCOL_HEAD_ACK = {0x23, 0x04, 0x01, 0x34, 0x51, 0x33, 0x35, 0x18};
 	
@@ -25,7 +24,7 @@ public class Netter extends NP
 	
 	private InfoWindow window;//用于回调，用来设置下载进度信息
 
-	public Netter(String host, int port, InfoWindow window)
+	public Nett(String host, int port, InfoWindow window)
 	{
 		this.host = host;
 		this.port = port;
@@ -64,25 +63,17 @@ public class Netter extends NP
 			JOptionPane.showMessageDialog(null, "无法连接到: "+getHost(), "连接失败！", 0);
 			Runtime.getRuntime().exit(0);
 		}
-		
-		//设置IO超时
-		window.setStateText("正在设置IO超时。。。");
+
 		socket.setSoTimeout(40000);
-		
-		
-		//打开IO流
-		window.setStateText("正在打开IO流。。。");
 		netIn = new DataInputStream(socket.getInputStream());
 		netOut = new DataOutputStream(socket.getOutputStream());
 	
-		
-		//测试协议
-		window.setStateText("正在测试传输协议。。。");
+		window.setStateText("正在测试传输协议。。。"); // 测试协议
 		
 		if(!Ack(PROTOCOL_HEAD_ACK))
 		{
 			window.destory();
-			JOptionPane.showMessageDialog(null, "协议测试未通过，请检查端口是否被占用或者设置正确！", "协议错误", 0);
+			JOptionPane.showMessageDialog(null, "协议测试未通过，请检查是否连接到了正确的端口或者被占用！", "协议错误", 0);
 			Runtime.getRuntime().exit(0);
 		}
 		
@@ -101,7 +92,7 @@ public class Netter extends NP
 			Runtime.getRuntime().exit(0);
 		}
 		
-		window.setStateText("正在传回内容。。。");
+		window.setStateText("正在传回内容");
 		mainClass = readString();
 		
 		//接收文件长度
@@ -122,7 +113,7 @@ public class Netter extends NP
 			netIn.readFully(buf);
 			fos.write(buf, 0, buf.length);
 			int progress = (int)( ((float)c / (float)ac)*100);
-			window.setStateText("正在传回内容。。。"+progress);
+			window.setStateText("正在传回内容"+progress);
 		}
 
 		for (int c = 0; c < bc; c++)

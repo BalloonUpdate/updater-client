@@ -1,4 +1,4 @@
-package cn.innc11.updater.client.loader.net;
+package cn.innc11.updater.client.loader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -10,12 +10,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-/**
- * 此类包含了常用的传输方法,主要用于被继承
- * NP(NetPrococol)
- *
- * @author innc-table
- */
 public abstract class NP
 {
 	protected DataInputStream netIn;
@@ -146,23 +140,29 @@ public abstract class NP
 
 	public void writeBytes(byte[] bytes) throws IOException
 	{
-		//final int maxTransportLength = 1024;
-		
-		//这里增加长度 因为有的文件中文名过长就会导致有的中文乱码问题
-		final int maxTransportLength = 10240;
-		
 		//告诉客户端数组的长度
 		netOut.writeInt(bytes.length);
-		
-		int at = (int)(bytes.length / maxTransportLength);
-		int bt = (int)(bytes.length % maxTransportLength);
-		
-		for (int c = 0; c < at; c++)
-		{
-			netOut.write(bytes, c*maxTransportLength, (c+1)*maxTransportLength);
-		}
-		netOut.write(bytes, at*maxTransportLength, bt);
+
+		writeByteArrays(bytes);
 	}
+
+	public void writeByteArrays(byte[] bytes) throws IOException
+	{
+
+		final int max = 1024;
+
+		int at = (int)(bytes.length / max);
+		int bt = (int)(bytes.length % max);
+
+		for (int i = 0; i < at; i++)
+		{
+			netOut.write(bytes, i*max, max);
+		}
+
+		netOut.write(bytes, at*max, bt);
+	}
+
+
 
 	public byte[] readByteArray() throws IOException
 	{

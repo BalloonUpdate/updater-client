@@ -1,4 +1,4 @@
-package cn.innc11.updater.client.loader.view;
+package cn.innc11.updater.client.loader;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
